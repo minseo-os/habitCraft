@@ -47,7 +47,7 @@ input,select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--ln
 .dot{width:26px!important;height:26px!important;border-radius:50%!important;border:0!important}
 .empty{text-align:center;padding:24px 8px;color:var(--mut)}
 .pop{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);border-radius:10px;padding:10px 16px;font-weight:600;font-size:14px;z-index:9;animation:up 1.8s forwards;text-align:center;white-space:nowrap}
-.install{display:none;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 9px;font-size:12px;font-weight:600}
+.install{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 9px;font-size:12px;font-weight:600}
 @media (max-width:380px){.wrap{padding-left:10px;padding-right:10px}.install{padding:6px 7px}h1{font-size:18px}.pts{font-size:21px}}
 @keyframes up{0%{opacity:0;transform:translate(-50%,10px)}12%{opacity:1;transform:translate(-50%,0)}85%{opacity:1}100%{opacity:0}}
 </style></head><body><div class="wrap" id="app"></div>
@@ -134,8 +134,13 @@ function exp(){
  a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 let deferredInstall=null;
-window.addEventListener("beforeinstallprompt",ev=>{ev.preventDefault();deferredInstall=ev;const b=document.getElementById("install");if(b)b.style.display="block"});
-document.addEventListener("click",async ev=>{if(ev.target.id!=="install"||!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;ev.target.style.display="none"});
+window.addEventListener("beforeinstallprompt",ev=>{ev.preventDefault();deferredInstall=ev});
+document.addEventListener("click",async ev=>{
+ if(ev.target.id!=="install")return;
+ if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;return}
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+ pop(ios?"Safari 공유 버튼 · 홈 화면에 추가를 선택하세요":"브라우저 메뉴에서 앱 설치 또는 홈 화면에 추가를 선택하세요");
+});
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 document.addEventListener("change",ev=>{if(!ev.target||ev.target.id!=="fi")return;const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=async()=>{try{const c=JSON.parse(r.result);if(!Array.isArray(c.goals)||!Array.isArray(c.tasks))throw 0;S=Object.assign({goals:[],tasks:[],rewards:[],spent:0,got:[]},c);await writeState();render();pop("불러오기 완료")}catch(e){pop("올바른 백업 파일이 아니에요")}};r.readAsText(f)});
 (async()=>{await readState();render()})();

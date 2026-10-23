@@ -1,4 +1,4 @@
-const CACHE = "weekly-challenge-v2";
+const CACHE = "weekly-challenge-v3";
 const ASSETS = ["./", "./index.html", "./habitCraft.html", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", event => {
