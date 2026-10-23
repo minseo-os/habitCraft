@@ -1,0 +1,15 @@
+{
+  "name": "주간 도전",
+  "short_name": "주간 도전",
+  "description": "목표를 세우고 한 주의 계획을 실천하는 달력",
+  "lang": "ko-KR",
+  "start_url": "./habitCraft.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#4338ca",
+  "background_color": "#fafafa",
+  "icons": [
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+  ]
+}
