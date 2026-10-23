@@ -1,5 +1,5 @@
 const CACHE = "weekly-challenge-v2";
-const ASSETS = ["./", "./habitCraft.html", "./manifest.webmanifest", "./icon.svg"];
+const ASSETS = ["./", "./index.html", "./habitCraft.html", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
